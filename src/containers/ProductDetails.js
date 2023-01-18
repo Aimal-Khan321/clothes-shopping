@@ -1,48 +1,48 @@
-import axios from 'axios';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { selectedProduct, removeSelectedProduct } from '../redux/actions/productActions';
-
-
-
+/* eslint-disable */
+import React, { useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    selectedProduct,
+    removeSelectedProduct,
+} from "../redux/actions/productActions";
 const ProductDetails = () => {
-    const product = useSelector((state) => state.product)
-    const { image, title, price, category, description } = product;
     const { productId } = useParams();
+    let product = useSelector((state) => state.product);
+    const { image, title, price, category, description } = product;
     const dispatch = useDispatch();
-    console.log(product);
-
-    const fetchSelectedProducts = async () => {
+    const fetchProductDetail = async (id) => {
         const response = await axios
-            .get(`https://fakestoreapi.com/products/${productId}`)
+            .get(`https://fakestoreapi.com/products/${id}`)
             .catch((err) => {
-                console.log("Error", err);
+                console.log("Err: ", err);
             });
-        dispatch(selectedProduct(response.data))
+        dispatch(selectedProduct(response.data));
     };
+
     useEffect(() => {
-        if (productId && productId !== "") fetchSelectedProducts();
+        if (productId && productId !== "") fetchProductDetail(productId);
         return () => {
             dispatch(removeSelectedProduct());
-        }
-    }, [productId]);
+        };
+    }, [productId])
     return (
-        <div className="ui grid container" style={{ marginTop: "50px" }}>
+        <div className="ui grid container">
             {Object.keys(product).length === 0 ? (
-                <div style={{ fontSize: 30, marginLeft: "400px" }}>...Loading</div>
+                <div style={{ marginTop: "50px" }}>...Loading</div>
             ) : (
-                <div className="ui placeholder segment" style={{ margin: "30px 250px", width: "700px" }}>
+                <div className="ui placeholder segment" style={{ margin: "150px 150px" }}>
                     <div className="ui two column stackable center aligned grid">
                         <div className="ui vertical divider">AND</div>
                         <div className="middle aligned row">
                             <div className="column lp">
-                                <img className="ui fluid image" src={image} alt={title} />
+                                <img className="ui fluid image" src={image} alt="" />
                             </div>
                             <div className="column rp">
                                 <h1>{title}</h1>
                                 <h2>
-                                    <a className="ui teal tag label">${price}</a>
+                                    <p className="ui teal tag label">${price}</p>
                                 </h2>
                                 <h3 className="ui brown block header">{category}</h3>
                                 <p>{description}</p>
@@ -59,6 +59,6 @@ const ProductDetails = () => {
             )}
         </div>
     );
-}
+};
 
 export default ProductDetails;
