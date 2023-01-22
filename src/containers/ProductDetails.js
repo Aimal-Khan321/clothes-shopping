@@ -4,7 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    selectedProduct,
+    fetchProduct,
     removeSelectedProduct,
 } from "../redux/actions/productActions";
 const ProductDetails = () => {
@@ -12,17 +12,17 @@ const ProductDetails = () => {
     let product = useSelector((state) => state.product);
     const { image, title, price, category, description } = product;
     const dispatch = useDispatch();
-    const fetchProductDetail = async (id) => {
-        const response = await axios
-            .get(`https://fakestoreapi.com/products/${id}`)
-            .catch((err) => {
-                console.log("Err: ", err);
-            });
-        dispatch(selectedProduct(response.data));
-    };
+    // const fetchProductDetail = async (id) => {
+    //     const response = await axios
+    //         .get(`https://fakestoreapi.com/products/${id}`)
+    //         .catch((err) => {
+    //             console.log("Err: ", err);
+    //         });
+    //     dispatch(selectedProduct(response.data));
+    // };
 
     useEffect(() => {
-        if (productId && productId !== "") fetchProductDetail(productId);
+        if (productId && productId !== "") dispatch(fetchProduct(productId));
         return () => {
             dispatch(removeSelectedProduct());
         };
@@ -30,14 +30,14 @@ const ProductDetails = () => {
     return (
         <div className="ui grid container">
             {Object.keys(product).length === 0 ? (
-                <div style={{ marginTop: "50px" }}>...Loading</div>
+                <div style={{ marginTop: "170px", marginLeft: "480px", fontSize: "40px" }}>Loading...</div>
             ) : (
-                <div className="ui placeholder segment" style={{ margin: "150px 150px" }}>
+                <div className="ui placeholder segment" style={{ margin: "70px 150px" }}>
                     <div className="ui two column stackable center aligned grid">
                         <div className="ui vertical divider">AND</div>
                         <div className="middle aligned row">
                             <div className="column lp">
-                                <img className="ui fluid image" src={image} alt="" />
+                                <img className="ui medium image" src={image} alt="" />
                             </div>
                             <div className="column rp">
                                 <h1>{title}</h1>

@@ -7,12 +7,12 @@ const ProductComponent = () => {
     const renderList = products.map((product) => {
         const { id, title, image, price, category } = product;
         return (
-            <div className="four wide column" key={id}>
+            <div className="four wide column" style={{ marginTop: "30px", }} key={id}>
                 <Link to={`/product/${id}`}>
-                    <div className="ui link cards">
+                    <div className="ui link cards tiny">
                         <div className="card">
-                            <div className="image">
-                                <img src={image} alt={title} />
+                            <div className="ui images">
+                                <img className="ui small image" src={image} alt={title} />
                             </div>
                             <div className="content">
                                 <div className="header">{title}</div>
